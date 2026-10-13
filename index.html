@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mira Photo Booth</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,400;1,6..96,500&family=Hanken+Grotesk:wght@400;500;600&family=Syncopate:wght@400;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-state="live">
+  <!-- live mirror -->
+  <video id="live" playsinline muted autoplay></video>
+  <div class="shade" aria-hidden="true"><div class="shade-hole"></div></div>
+
+  <!-- the photo frame: holds the guide, the still and the result -->
+  <div id="frame" class="frame">
+    <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+    <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+    <img id="still" class="photo" alt="Your photo">
+    <img id="result" class="photo" alt="You wearing the selected outfit">
+    <div class="scan" aria-hidden="true"></div>
+    <button id="compare" class="compare" type="button" aria-label="Hold to see your original photo">
+      <img id="compare-img" alt="">
+      <span>Hold for before</span>
+    </button>
+  </div>
+
+  <div id="countdown" class="countdown" aria-live="assertive"><span></span></div>
+  <div id="flash" class="flash" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="brand">
+      <span class="brand-mark">MIRA</span>
+      <span class="brand-sub">AI fitting booth · FW26</span>
+    </div>
+    <div class="top-right">
+      <div id="status" class="status" role="status" hidden><span class="status-dot" aria-hidden="true"></span><span class="status-text"></span></div>
+      <button id="wardrobe-open" class="btn btn-ghost btn-small" type="button">Wardrobe</button>
+    </div>
+  </header>
+
+  <!-- 1. live -->
+  <section class="panel panel-live" aria-label="Take a photo">
+    <p class="lead">Stand in the frame, then take your photo</p>
+    <button id="shutter" class="shutter" type="button" aria-label="Take photo">
+      <span class="shutter-ring" aria-hidden="true"></span>
+    </button>
+    <p class="sub">Upper body in view · face the mirror</p>
+  </section>
+
+  <!-- 2. pick an outfit -->
+  <section class="panel panel-pick" aria-label="Choose an outfit">
+    <p class="lead">Choose your outfit</p>
+    <nav id="rack" class="rack" aria-label="Outfits"><div class="rack-track"></div></nav>
+    <p id="rack-empty" class="sub" hidden>No clothes yet. <button id="rack-add" class="link" type="button">Add clothes to the wardrobe</button></p>
+    <div class="actions">
+      <button id="retake" class="btn btn-ghost" type="button">Retake photo</button>
+      <button id="create" class="btn btn-primary" type="button" disabled>Create my look</button>
+    </div>
+  </section>
+
+  <!-- 3. generating -->
+  <section class="panel panel-gen" aria-label="Creating your look" aria-live="polite">
+    <p class="lead">Creating your look</p>
+    <p id="gen-item" class="sub"></p>
+    <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+    <button id="cancel" class="btn btn-ghost btn-small" type="button">Cancel</button>
+  </section>
+
+  <!-- 4. result -->
+  <section class="panel panel-result" aria-label="Your look">
+    <p id="result-name" class="lead"></p>
+    <div class="actions">
+      <button id="another" class="btn btn-primary" type="button">Try another outfit</button>
+      <button id="restart" class="btn btn-ghost" type="button">New photo</button>
+      <a id="save" class="btn btn-ghost" download="mira-look.jpg" href="#">Save</a>
+    </div>
+  </section>
+
+  <!-- wardrobe: upload up to 5 garments -->
+  <section id="wardrobe" class="wardrobe" aria-labelledby="wardrobe-title" hidden>
+    <div class="wardrobe-sheet">
+      <div class="wardrobe-head">
+        <div>
+          <h2 id="wardrobe-title" class="wardrobe-title">Wardrobe</h2>
+          <p class="wardrobe-hint">Add up to 5 clothing photos. Best: one garment, front view, plain background.</p>
+        </div>
+        <button id="wardrobe-close" class="btn btn-primary btn-small" type="button">Done</button>
+      </div>
+      <div id="slots" class="slots"></div>
+      <input id="upload" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+      <p id="wardrobe-msg" class="wardrobe-msg" role="status"></p>
+    </div>
+  </section>
+
+  <!-- camera problems -->
+  <section id="camera-off" class="notice" hidden>
+    <p class="notice-eyebrow">Camera</p>
+    <p class="notice-msg">Waiting for camera permission…</p>
+    <button id="camera-start" class="btn btn-primary" type="button">Turn on camera</button>
+  </section>
+
+  <!-- try-on errors -->
+  <section id="error" class="notice" hidden>
+    <p class="notice-eyebrow">That didn’t work</p>
+    <p class="notice-msg"></p>
+    <button id="error-ok" class="btn btn-primary" type="button">Back</button>
+  </section>
+
+  <script src="js/config.js"></script>
+  <script src="js/camera.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

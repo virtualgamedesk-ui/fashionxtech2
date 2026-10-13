@@ -1,0 +1,17 @@
+{
+  "name": "mira-photo-booth",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "description": "AI fitting booth: take a photo, pick an outfit, get a picture of yourself wearing it.",
+  "scripts": {
+    "start": "node server.mjs",
+    "check-space": "node tools/check-space.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@gradio/client": "2.7.1"
+  }
+}
